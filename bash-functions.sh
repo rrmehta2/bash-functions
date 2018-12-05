@@ -8,3 +8,12 @@ function deleteSO() {
         sfdx force:org:delete -p -u ${org}
     done
 }
+
+# Function to log out of all non-scratch orgs
+function logoutOrgs() {
+    echo 'Logging out of non-scratch orgs..'
+    local orgs=$(sfdx force:org:list --json)
+    for org in $(echo "${orgs}" | jq -r '.result.nonScratchOrgs[].username'); do
+        sfdx force:auth:logout -p -u ${org}
+    done
+}
