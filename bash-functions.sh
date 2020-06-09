@@ -17,3 +17,12 @@ function logoutOrgs() {
         sfdx force:auth:logout -p -u ${org}
     done
 }
+
+# Function to display all scratch orgs
+function displaySO() {
+    echo 'Displaying all scratch orgs..'
+    local orgs=$(sfdx force:org:list --json)
+    for org in $(echo "${orgs}" | jq -r '.result.scratchOrgs[].signupUsername'); do
+        sfdx force:org:display -u ${org}
+    done
+}
